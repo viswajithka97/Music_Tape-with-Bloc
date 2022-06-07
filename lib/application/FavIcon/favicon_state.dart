@@ -1,7 +1,7 @@
 part of 'favicon_bloc.dart';
 
 @immutable
- class FaviconState {
+abstract class FaviconState {
     FaviconState();
 
 }

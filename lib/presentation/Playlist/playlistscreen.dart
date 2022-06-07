@@ -145,7 +145,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                                         .removeAt(index);
                                                     box.put(widget.playlistName,
                                                         playlistSongs);
-                                           
                                                   }
                                                 },
                                               ),

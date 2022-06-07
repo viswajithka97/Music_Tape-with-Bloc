@@ -109,30 +109,25 @@ class _SearchState extends State<Search> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  height: MediaQuery.of(context).size.height * .07,
-                  width: MediaQuery.of(context).size.width * .9,
                   child: TextField(
                     cursorHeight: 18.h,
                     cursorColor: Colors.black,
-                    decoration:  InputDecoration(
+                    decoration: InputDecoration(
                       border: InputBorder.none,
                       contentPadding:
                           EdgeInsets.only(top: 14.h, right: 10.w, left: 10.w),
-                      suffixIcon:const Icon(
+                      suffixIcon: const Icon(
                         Icons.search,
                         color: Colors.black,
                       ),
                       hintText: ' Search a song',
                       filled: true,
-                      fillColor: const
-                      Color(0xFFAB76E0),
+                      fillColor: const Color(0xFFAB76E0),
                     ),
-                    onChanged: (value) {
-                      setState(
-                        () {
-                          search = value.trim();
-                        },
-                      );
+                    onChanged: (value) async {
+                      setState(() {
+                        search = value.trim();
+                      });
                     },
                   ),
                 ),
@@ -152,57 +147,75 @@ class _SearchState extends State<Search> {
                                       return GestureDetector(
                                         onTap: () {
                                           OpenPlayer(
-                                                  fullSongs: searchResult,
-                                                  index: index, SongId: widget.fullSongs[index].metas.id.toString(), 
-                                                  
-                                                  )
-                                              .openAssetPlayer(
-                                                  index: index,
-                                                  songs: searchResult);
+                                            fullSongs: searchResult,
+                                            index: index,
+                                            SongId: widget
+                                                .fullSongs[index].metas.id
+                                                .toString(),
+                                          ).openAssetPlayer(
+                                              index: index,
+                                              songs: searchResult);
                                         },
-                                        child: ListTile(
-                                          leading: SizedBox(
-                                            height: 50.h,
-                                            width: 50.w,
-                                            child: QueryArtworkWidget(
-                                              id: int.parse(searchResult[index]
-                                                  .metas
-                                                  .id!),
-                                              type: ArtworkType.AUDIO,
-                                              artworkBorder:
-                                                  BorderRadius.circular(15),
-                                              artworkFit: BoxFit.cover,
-                                              nullArtworkWidget: Container(
-                                                height: 50.h,
-                                                width: 50.w,
-                                                decoration: const BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(15)),
-                                                  image: DecorationImage(
-                                                    image: AssetImage(
-                                                        "assets/images/logodefault.jpg"),
-                                                    fit: BoxFit.cover,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 10.0.h,
+                                              left: 10.0.w,
+                                              right: 10.0.w),
+                                          child: Container(
+                                            height: 75,
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                color: const Color.fromARGB(
+                                                    106, 217, 197, 218)),
+                                            child: ListTile(
+                                              leading: Container(
+                                                height: 50,
+                                                width: 50,
+                                                child: QueryArtworkWidget(
+                                                  id: int.parse(
+                                                      searchResult[index]
+                                                          .metas
+                                                          .id!),
+                                                  type: ArtworkType.AUDIO,
+                                                  artworkBorder:
+                                                      BorderRadius.circular(5),
+                                                  artworkFit: BoxFit.cover,
+                                                  nullArtworkWidget: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    child: Image.asset(
+                                                        "asset/images/new3.png"),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ),
-                                          title: Text(
-                                            searchResult[index].metas.title!,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style:  TextStyle(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                          subtitle: Text(
-                                            searchResult[index].metas.artist!,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style:  TextStyle(
-                                              fontSize: 14.sp,
+                                              title: Text(
+                                                searchResult[index]
+                                                    .metas
+                                                    .title!,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                              subtitle: Text(
+                                                searchResult[index]
+                                                    .metas
+                                                    .artist!,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: 14.sp,
+                                                ),
+                                              ),
+                                              trailing: Icon(
+                                                Icons.play_circle_fill,
+                                                size: 30,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -214,12 +227,11 @@ class _SearchState extends State<Search> {
                               },
                             ),
                           )
-                        :  Padding(
+                        : Padding(
                             padding: EdgeInsets.all(30.h.w),
                             child: Text(
                               "No Result Found",
                               style: TextStyle(
-                                
                                 fontSize: 20.sp,
                               ),
                             ),

@@ -185,7 +185,6 @@ class _MyMusicState extends State<MyMusic> {
     if (!permissionStatus) {
       await _audioQuery.permissionsRequest();
     }
-    setState(() {});
 
     fetchedSongs = await _audioQuery.querySongs();
 
@@ -222,7 +221,6 @@ class _MyMusicState extends State<MyMusic> {
           MaterialPageRoute(builder: (context) => Home(allsongs: fullSongs)),
           (route) => false);
     }
-    setState(() {});
   }
 
   Songmodel findwatchlaterSongs(List<Songmodel> recently, String id) {

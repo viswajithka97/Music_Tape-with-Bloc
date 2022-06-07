@@ -9,14 +9,9 @@ import 'package:music_tape/presentation/Player/openplayer.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Favourites extends StatefulWidget {
-  const Favourites({Key? key}) : super(key: key);
+class Favourites extends StatelessWidget {
+ Favourites({Key? key}) : super(key: key);
 
-  @override
-  State<Favourites> createState() => _FavouritesState();
-}
-
-class _FavouritesState extends State<Favourites> {
   List<Audio> playliked = [];
   final box = Songbox.getInstance();
   @override
@@ -61,8 +56,8 @@ class _FavouritesState extends State<Favourites> {
                           backgroundColor:
                               const Color.fromARGB(255, 214, 165, 236),
                           context: context,
-                          builder: (context) {
-                            return const FavouriteAddSong();
+                          builder: (ctx) {
+                            return FavouriteAddSong();
                           });
                     },
                     icon: const Icon(Icons.add)),

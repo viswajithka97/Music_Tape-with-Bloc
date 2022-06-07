@@ -75,9 +75,9 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
                                       ))),
                               TextButton.icon(
                                   onPressed: () {
-                                    setState(() {
-                                      recentplay!.clear();
-                                    });
+                                   setState(() {
+                                     recentplay!.clear();
+                                   });
                                     Navigator.pop(context);
                                   },
                                   icon: Icon(

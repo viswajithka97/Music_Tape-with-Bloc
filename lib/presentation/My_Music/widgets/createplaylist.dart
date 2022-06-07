@@ -54,7 +54,6 @@ class _createPlaylistState extends State<createPlaylist> {
                   if (formkey.currentState!.validate()) {
                     box.put(title, playlists);
                     Navigator.pop(context);
-                    setState(() {});
                   }
                 },
                 child: const Text(

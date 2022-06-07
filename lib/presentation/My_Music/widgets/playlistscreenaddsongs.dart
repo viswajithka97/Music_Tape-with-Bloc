@@ -1,6 +1,8 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_tape/application/Add_Button/add_button_bloc.dart';
 import 'package:music_tape/core/db_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -69,7 +71,11 @@ class _SongSheetState extends State<SongSheet> {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            trailing: playlistSongs
+            
+            trailing: BlocBuilder<AddButtonBloc, AddButtonState>(
+        builder: (context, state) {
+                return 
+playlistSongs
                     .where((element) =>
                         element.id.toString() == dbSongs[index].id.toString())
                     .isEmpty
@@ -77,8 +83,7 @@ class _SongSheetState extends State<SongSheet> {
                     onPressed: () async {
                       playlistSongs.add(dbSongs[index]);
                       await box.put(widget.playlistName, playlistSongs);
-
-                      setState(() {});
+                      context.read<AddButtonBloc>().add(AddButtonChangeEvent(addbuttoniconData: Icons.add));
                     },
                     icon: const Icon(
                       Icons.add,
@@ -90,10 +95,13 @@ class _SongSheetState extends State<SongSheet> {
                           elemet.id.toString() == dbSongs[index].id.toString());
 
                       await box.put(widget.playlistName, playlistSongs);
-                      setState(() {});
+                      context.read<AddButtonBloc>().add(AddButtonChangeEvent(addbuttoniconData: Icons.check_box));
+                     
                     },
                     icon: const Icon(Icons.check_box, color: Colors.black),
-                  ),
+                  );
+              },
+            )
           ),
         );
       },

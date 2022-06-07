@@ -38,7 +38,7 @@ class Home extends StatelessWidget {
       ),
       const Folderslist(),
       PlaylistPage(),
-      const Favourites(),
+      Favourites(),
     ];
     return Scaffold(
       drawer: const drawer(),
@@ -202,8 +202,6 @@ class Home extends StatelessWidget {
                     context
                         .read<FaviconBloc>()
                         .add(BottomNavigationChangeEvent(pageNo: newIndex));
-
-                    print('pressed');
                   },
                   items: const [
                     BottomNavigationBarItem(

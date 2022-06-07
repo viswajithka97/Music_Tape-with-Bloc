@@ -10,13 +10,12 @@ class FaviconBloc extends Bloc<FaviconEvent, FaviconState> {
       emit(FaviconChange(iconData: event.iconData));
       emit(FaviconChanged());
     });
-    on<FaviconChangedEvent>((event, emit){
+    on<FaviconChangedEvent>((event, emit) {
       emit(FaviconChanged());
       emit(FaviconChanged());
     });
-    on<BottomNavigationChangeEvent>((event, emit){
-      emit(FaviconInitial(index:event.pageNo));
-      print('object');
+    on<BottomNavigationChangeEvent>((event, emit) {
+      emit(FaviconInitial(index: event.pageNo));
     });
   }
 }

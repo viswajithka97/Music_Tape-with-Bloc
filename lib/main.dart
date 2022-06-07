@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:music_tape/application/Add_Button/add_button_bloc.dart';
 import 'package:music_tape/application/FavIcon/favicon_bloc.dart';
 import 'package:music_tape/application/FavouriteIconCubit/favouriteicon_cubit.dart';
 import 'package:music_tape/core/db_model.dart';
@@ -58,6 +59,11 @@ class MyApp extends StatelessWidget {
               BlocProvider(
                 create: (context) {
                   return FaviconBloc();
+                },
+              ),
+              BlocProvider(
+                create: (context) {
+                  return AddButtonBloc();
                 },
               )
             ],

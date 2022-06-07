@@ -2,6 +2,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_tape/application/Add_Button/add_button_bloc.dart';
 import 'package:music_tape/application/FavIcon/favicon_bloc.dart';
 import 'package:music_tape/core/db_model.dart';
 import 'package:music_tape/presentation/Playlist/playlistlist.dart';
@@ -166,17 +167,17 @@ class NowPlayingScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          BlocBuilder<FaviconBloc, FaviconState>(
-                              builder: (context, state) {
+                          BlocBuilder<AddButtonBloc, AddButtonState>(
+                            builder: (context, state) {
                               return !isShuffle
                                   ? IconButton(
                                       onPressed: () {
-                                       
-                                          isShuffle = true;
-                                          player.toggleShuffle();
-                                       context.read<FaviconBloc>().add(
-                                              FaviconChangeEvent(
-                                                  iconData: Icons.shuffle));
+                                        isShuffle = true;
+                                        player.toggleShuffle();
+                                        context.read<AddButtonBloc>().add(
+                                            AddButtonChangeEvent(
+                                                addbuttoniconData:
+                                                    Icons.shuffle));
                                       },
                                       icon: Icon(
                                         Icons.shuffle,
@@ -185,12 +186,12 @@ class NowPlayingScreen extends StatelessWidget {
                                     )
                                   : IconButton(
                                       onPressed: () {
-                                    
-                                          isShuffle = false;
-                                          player.setLoopMode(LoopMode.playlist);
-                                    context.read<FaviconBloc>().add(
-                                              FaviconChangeEvent(
-                                                  iconData: Icons.cached));
+                                        isShuffle = false;
+                                        player.setLoopMode(LoopMode.playlist);
+                                        context.read<AddButtonBloc>().add(
+                                            AddButtonChangeEvent(
+                                                addbuttoniconData:
+                                                    Icons.cached));
                                       },
                                       icon: Icon(
                                         Icons.cached,
@@ -206,7 +207,7 @@ class NowPlayingScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(50),
                               color: const Color(0xFFAB76E0),
                             ),
-                            child: BlocBuilder<FaviconBloc, FaviconState>(
+                            child: BlocBuilder<AddButtonBloc, AddButtonState>(
                               builder: (context, state) {
                                 return likedSongs!
                                         .where((element) =>
@@ -227,9 +228,10 @@ class NowPlayingScreen extends StatelessWidget {
                                             ),
                                           );
                                           likedSongs = box.get("favourites");
-                                          context.read<FaviconBloc>().add(
-                                              FaviconChangeEvent(
-                                                  iconData: Icons.favorite));
+                                          context.read<AddButtonBloc>().add(
+                                              AddButtonChangeEvent(
+                                                  addbuttoniconData:
+                                                      Icons.favorite));
                                         },
                                         icon: Icon(
                                           Icons.favorite_border,
@@ -250,9 +252,9 @@ class NowPlayingScreen extends StatelessWidget {
                                               ),
                                             ),
                                           );
-                                          context.read<FaviconBloc>().add(
-                                              FaviconChangeEvent(
-                                                  iconData: Icons
+                                          context.read<AddButtonBloc>().add(
+                                              AddButtonChangeEvent(
+                                                  addbuttoniconData: Icons
                                                       .favorite_outline_outlined));
                                         },
                                         icon: Icon(
@@ -265,7 +267,7 @@ class NowPlayingScreen extends StatelessWidget {
                               },
                             ),
                           ),
-                          BlocBuilder<FaviconBloc, FaviconState>(
+                          BlocBuilder<AddButtonBloc, AddButtonState>(
                             builder: (context, state) {
                               return !isLooping
                                   ? IconButton(
@@ -274,9 +276,9 @@ class NowPlayingScreen extends StatelessWidget {
                                         player.setLoopMode(
                                           LoopMode.single,
                                         );
-                                        context.read<FaviconBloc>().add(
-                                            FaviconChangeEvent(
-                                                iconData:
+                                        context.read<AddButtonBloc>().add(
+                                            AddButtonChangeEvent(
+                                                addbuttoniconData:
                                                     Icons.repeat_rounded));
                                       },
                                       icon: Icon(
@@ -288,9 +290,10 @@ class NowPlayingScreen extends StatelessWidget {
                                       onPressed: () {
                                         isLooping = false;
                                         player.setLoopMode(LoopMode.playlist);
-                                        context.read<FaviconBloc>().add(
-                                            FaviconChangeEvent(
-                                                iconData: Icons.repeat_one));
+                                        context.read<AddButtonBloc>().add(
+                                            AddButtonChangeEvent(
+                                                addbuttoniconData:
+                                                    Icons.repeat_one));
                                       },
                                       icon: Icon(
                                         Icons.repeat_one,
@@ -340,7 +343,6 @@ class NowPlayingScreen extends StatelessWidget {
                         },
                         icon: Icon(Icons.skip_next,
                             size: 40.h.w, color: Colors.white)),
-                     
                   ],
                 )
               ],
