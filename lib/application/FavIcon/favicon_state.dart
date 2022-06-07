@@ -1,18 +1,20 @@
 part of 'favicon_bloc.dart';
 
 @immutable
-abstract class FaviconState {
+ class FaviconState {
     FaviconState();
 
 }
 class FaviconInitial extends FaviconState{
-  
+  int index;
+  FaviconInitial({this.index=0});
 }
 
 class FaviconChange extends FaviconState {
-  final IconData iconData;
 
-  FaviconChange({required this.iconData});
+  final IconData? iconData;
+
+  FaviconChange({this.iconData,});
 }
 
 class FaviconChanged extends FaviconState {

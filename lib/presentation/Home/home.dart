@@ -4,7 +4,9 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 // ignore: unnecessary_import
 import 'package:assets_audio_player/src/playable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marquee/marquee.dart';
+import 'package:music_tape/application/FavIcon/favicon_bloc.dart';
 import 'package:music_tape/presentation/Drawer/drawer.dart';
 import 'package:music_tape/presentation/Now_Playing_Screen/nowplayingscreen.dart';
 import 'package:music_tape/presentation/Folders/folders.dart';
@@ -15,15 +17,10 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // ignore: must_be_immutable
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   List<Audio> allsongs;
   Home({Key? key, required this.allsongs}) : super(key: key);
 
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
   final audioQuery = OnAudioQuery();
   final AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer.withId('0');
 
@@ -35,12 +32,12 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _widgetOptions = <Widget>[
+    final _widgetOptions = [
       MyMusic(
-        fullsongs: widget.allsongs,
+        fullsongs: allsongs,
       ),
       const Folderslist(),
-       PlaylistPage(),
+      PlaylistPage(),
       const Favourites(),
     ];
     return Scaffold(
@@ -51,11 +48,11 @@ class _HomeState extends State<Home> {
             MaterialPageRoute(
                 builder: (context) => NowPlayingScreen(
                       index: 0,
-                      fullSongs: widget.allsongs,
+                      fullSongs: allsongs,
                     )));
       }, child: assetsAudioPlayer.builderCurrent(
           builder: (BuildContext context, Playing? playing) {
-        final myAudio = find(widget.allsongs, playing!.audio.assetAudioPath);
+        final myAudio = find(allsongs, playing!.audio.assetAudioPath);
 
         return Container(
           height: 80.h,
@@ -165,7 +162,12 @@ class _HomeState extends State<Home> {
           ),
         );
       })),
-      body: _widgetOptions.elementAt(_currentSelectedIndex),
+      body: BlocBuilder<FaviconBloc, FaviconState>(
+        builder: (context, state) {
+          state as FaviconInitial;
+          return _widgetOptions.elementAt(state.index);
+        },
+      ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           gradient: RadialGradient(
@@ -186,25 +188,36 @@ class _HomeState extends State<Home> {
           data: Theme.of(context).copyWith(
               // canvasColor:   Color.fromARGB(255, 191, 156, 199),
               canvasColor: Colors.transparent),
-          child: BottomNavigationBar(
-              selectedItemColor: Colors.black,
-              unselectedItemColor: const Color.fromARGB(175, 255, 255, 255),
-              currentIndex: _currentSelectedIndex,
-              onTap: (newIndex) {
-                setState(() {
-                  _currentSelectedIndex = newIndex;
-                });
-              },
-              items: const [
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.headphones), label: 'My Music'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.folder), label: 'Folders'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.playlist_add), label: 'Playlist'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.favorite_outlined), label: 'Favourite'),
-              ]),
+          child: BlocBuilder<FaviconBloc, FaviconState>(
+            builder: (context, state) {
+              state as FaviconInitial;
+
+              return BottomNavigationBar(
+                  selectedItemColor: Colors.black,
+                  unselectedItemColor: const Color.fromARGB(175, 255, 255, 255),
+                  currentIndex: state.index,
+                  onTap: (newIndex) {
+                    // _currentSelectedIndex = newIndex;
+
+                    context
+                        .read<FaviconBloc>()
+                        .add(BottomNavigationChangeEvent(pageNo: newIndex));
+
+                    print('pressed');
+                  },
+                  items: const [
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.headphones), label: 'My Music'),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.folder), label: 'Folders'),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.playlist_add), label: 'Playlist'),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.favorite_outlined),
+                        label: 'Favourite'),
+                  ]);
+            },
+          ),
         ),
       ),
     );

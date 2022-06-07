@@ -13,3 +13,7 @@ class FaviconChangeEvent extends FaviconEvent{
 class FaviconChangedEvent extends FaviconEvent{
   FaviconChangedEvent();
 }
+class BottomNavigationChangeEvent extends FaviconEvent{
+  int pageNo;
+  BottomNavigationChangeEvent({required this.pageNo});
+}

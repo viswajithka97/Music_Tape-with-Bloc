@@ -340,6 +340,7 @@ class NowPlayingScreen extends StatelessWidget {
                         },
                         icon: Icon(Icons.skip_next,
                             size: 40.h.w, color: Colors.white)),
+                     
                   ],
                 )
               ],

@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
 
 part 'favicon_event.dart';
 part 'favicon_state.dart';
@@ -14,6 +13,10 @@ class FaviconBloc extends Bloc<FaviconEvent, FaviconState> {
     on<FaviconChangedEvent>((event, emit){
       emit(FaviconChanged());
       emit(FaviconChanged());
+    });
+    on<BottomNavigationChangeEvent>((event, emit){
+      emit(FaviconInitial(index:event.pageNo));
+      print('object');
     });
   }
 }
