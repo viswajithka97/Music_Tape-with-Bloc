@@ -1,73 +1,22 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
-import 'package:music_tape/core/db_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_tape/application/search/search_bloc.dart';
 import 'package:music_tape/presentation/Player/openplayer.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // ignore: must_be_immutable
-class Search extends StatefulWidget {
+class Search extends StatelessWidget {
   List<Audio> fullSongs = [];
   Search({Key? key, required this.fullSongs}) : super(key: key);
 
-  @override
-  State<Search> createState() => _SearchState();
-}
-
-class _SearchState extends State<Search> {
-  final box = Songbox.getInstance();
   String search = "";
-
-  List<Songmodel> dbSongs = [];
-  List<Audio> allSongs = [];
-
-  searchSongs() {
-    dbSongs = box.get("musics") as List<Songmodel>;
-    // ignore: avoid_function_literals_in_foreach_calls
-    dbSongs.forEach(
-      (element) {
-        allSongs.add(
-          Audio.file(
-            element.songurl.toString(),
-            metas: Metas(
-                title: element.songname,
-                id: element.id.toString(),
-                artist: element.artist),
-          ),
-        );
-      },
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    searchSongs();
-  }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-
-    List<Audio> searchTitle = allSongs.where((element) {
-      return element.metas.title!.toLowerCase().startsWith(
-            search.toLowerCase(),
-          );
-    }).toList();
-
-    List<Audio> searchArtist = allSongs.where((element) {
-      return element.metas.artist!.toLowerCase().startsWith(
-            search.toLowerCase(),
-          );
-    }).toList();
-
-    List<Audio> searchResult = [];
-    if (searchTitle.isNotEmpty) {
-      searchResult = searchTitle;
-    } else {
-      searchResult = searchArtist;
-    }
 
     return SafeArea(
       child: Container(
@@ -125,13 +74,18 @@ class _SearchState extends State<Search> {
                       fillColor: const Color(0xFFAB76E0),
                     ),
                     onChanged: (value) async {
-                      setState(() {
-                        search = value.trim();
-                      });
+                      search = value.trim();
+                      context
+                          .read<SearchBloc>()
+                          .add(SerachInputEvent(search: value));
                     },
                   ),
                 ),
-                search.isNotEmpty
+                BlocBuilder<SearchBloc, SearchState>(
+                  builder: (context, state) {
+                                      List<Audio> searchResult = state.props as List<Audio>;
+
+                    return   search.isNotEmpty
                     ? searchResult.isNotEmpty
                         ? Expanded(
                             child: ListView.builder(
@@ -149,8 +103,7 @@ class _SearchState extends State<Search> {
                                           OpenPlayer(
                                             fullSongs: searchResult,
                                             index: index,
-                                            SongId: widget
-                                                .fullSongs[index].metas.id
+                                            SongId: fullSongs[index].metas.id
                                                 .toString(),
                                           ).openAssetPlayer(
                                               index: index,
@@ -236,7 +189,9 @@ class _SearchState extends State<Search> {
                               ),
                             ),
                           )
-                    : const SizedBox(),
+                    : const SizedBox();
+                  },
+                )
               ],
             ),
           ),

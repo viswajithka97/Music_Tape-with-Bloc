@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:music_tape/application/Add_Button/add_button_bloc.dart';
 import 'package:music_tape/application/FavIcon/favicon_bloc.dart';
-import 'package:music_tape/application/FavouriteIconCubit/favouriteicon_cubit.dart';
+import 'package:music_tape/application/search/search_bloc.dart';
 import 'package:music_tape/core/db_model.dart';
 
 import 'package:music_tape/splash_screen.dart';
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
             providers: [
               BlocProvider(
                 create: (context) {
-                  return FavouriteiconCubit();
+                  return SearchBloc();
                 },
               ),
               BlocProvider(
